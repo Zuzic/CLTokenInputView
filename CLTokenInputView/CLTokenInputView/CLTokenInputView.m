@@ -272,8 +272,16 @@ static CGFloat const FIELD_MARGIN_X = 4.0; // Note: Same as CLTokenView.PADDING_
     CGRect textFieldRect = self.textField.frame;
     textFieldRect.origin.x = curX;
     textFieldRect.origin.y = curY + self.additionalTextFieldYOffset;
-    textFieldRect.size.width = availableWidthForTextField;
-    textFieldRect.size.height = STANDARD_ROW_HEIGHT;
+    
+    if (self.isDefaultBehavior == NO) {
+        textFieldRect.size.width = availableWidthForTextField;
+        textFieldRect.size.height = STANDARD_ROW_HEIGHT;
+    } else {
+        textFieldRect.size.width = textFieldRect.size.width > availableWidthForTextField ? textFieldRect.size.width : availableWidthForTextField;
+        textFieldRect.size.height = textFieldRect.size.height > STANDARD_ROW_HEIGHT ? textFieldRect.size.height : STANDARD_ROW_HEIGHT;
+    }
+   
+    
     self.textField.frame = textFieldRect;
 
     CGFloat oldContentHeight = self.intrinsicContentHeight;
