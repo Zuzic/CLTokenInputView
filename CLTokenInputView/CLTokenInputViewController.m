@@ -43,21 +43,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    if (![self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
-        self.tokenInputTopSpace.constant = 0.0;
-    }
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    [infoButton addTarget:self action:@selector(onFieldInfoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
     self.tokenInputView.fieldName = @"To:";
-    self.tokenInputView.fieldView = infoButton;
     self.tokenInputView.placeholderText = @"Enter a name";
-    self.tokenInputView.accessoryView = [self contactAddButton];
     self.tokenInputView.drawBottomBorder = YES;
     
     self.secondTokenInputView.fieldName = NSLocalizedString(@"Cc:", nil);
     self.secondTokenInputView.drawBottomBorder = YES;
+    self.secondTokenInputView.isDefaultBehavior = YES;
     self.secondTokenInputView.delegate = self;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    self.secondTokenInputView.fieldFont = [UIFont systemFontOfSize:25];
 }
 
 - (void)didReceiveMemoryWarning
@@ -81,13 +76,10 @@
 {
     if ([text isEqualToString:@""]){
         self.filteredNames = nil;
-        self.tableView.hidden = YES;
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self contains[cd] %@", text];
         self.filteredNames = [self.names filteredArrayUsingPredicate:predicate];
-        self.tableView.hidden = NO;
     }
-    [self.tableView reloadData];
 }
 
 - (void)tokenInputView:(CLTokenInputView *)view didAddToken:(CLToken *)token
@@ -116,18 +108,12 @@
 
 - (void)tokenInputViewDidEndEditing:(CLTokenInputView *)view
 {
-    NSLog(@"token input view did end editing: %@", view);
     view.accessoryView = nil;
 }
 
 - (void)tokenInputViewDidBeginEditing:(CLTokenInputView *)view
 {
-    
-    NSLog(@"token input view did begin editing: %@", view);
     view.accessoryView = [self contactAddButton];
-    [self.view removeConstraint:self.tableViewTopLayoutConstraint];
-    self.tableViewTopLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
-    [self.view addConstraint:self.tableViewTopLayoutConstraint];
     [self.view layoutIfNeeded];
 }
 

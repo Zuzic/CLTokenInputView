@@ -15,6 +15,4 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *tokenInputTopSpace;
 @property (strong, nonatomic) IBOutlet CLTokenInputView *tokenInputView;
 @property (strong, nonatomic) IBOutlet CLTokenInputView *secondTokenInputView;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopLayoutConstraint;
 @end

@@ -58,9 +58,11 @@ static CGFloat const FIELD_MARGIN_X = 4.0; // Note: Same as CLTokenView.PADDING_
     self.tokens = [NSMutableArray arrayWithCapacity:20];
     self.tokenViews = [NSMutableArray arrayWithCapacity:20];
 
-    self.fieldColor = [UIColor lightGrayColor]; 
+    self.fieldColor = [UIColor lightGrayColor];
+    self.fieldFont = self.textField.font;
     
     self.fieldLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.fieldLabel.font = self.fieldFont;
     // NOTE: Explicitly not setting a font for the field label
     self.fieldLabel.textColor = self.fieldColor;
     [self addSubview:self.fieldLabel];
@@ -343,7 +345,10 @@ static CGFloat const FIELD_MARGIN_X = 4.0; // Note: Same as CLTokenView.PADDING_
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self tokenizeTextfieldText];
+    if (self.isDefaultBehavior == NO) {
+        [self tokenizeTextfieldText];
+    }
+    
     BOOL shouldDoDefaultBehavior = NO;
     if ([self.delegate respondsToSelector:@selector(tokenInputViewShouldReturn:)]) {
         shouldDoDefaultBehavior = [self.delegate tokenInputViewShouldReturn:self];
@@ -356,7 +361,9 @@ static CGFloat const FIELD_MARGIN_X = 4.0; // Note: Same as CLTokenView.PADDING_
                     replacementString:(NSString *)string
 {
     if (string.length > 0 && [self.tokenizationCharacters member:string]) {
-        [self tokenizeTextfieldText];
+        if (self.isDefaultBehavior == NO) {
+            [self tokenizeTextfieldText];
+        }
         // Never allow the change if it matches at token
         return NO;
     }
@@ -520,6 +527,11 @@ static CGFloat const FIELD_MARGIN_X = 4.0; // Note: Same as CLTokenView.PADDING_
 - (void)setFieldColor:(UIColor *)fieldColor {
     _fieldColor = fieldColor;
     self.fieldLabel.textColor = _fieldColor;
+}
+
+- (void) setFieldFont:(UIFont *)fieldFont{
+    _fieldFont = fieldFont;
+    self.fieldLabel.font = _fieldFont;
 }
 
 - (void)setFieldView:(UIView *)fieldView
