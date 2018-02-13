@@ -86,6 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) IBInspectable UITextAutocapitalizationType autocapitalizationType;
 @property (assign, nonatomic) IBInspectable UITextAutocorrectionType autocorrectionType;
 @property (assign, nonatomic) IBInspectable UIKeyboardAppearance keyboardAppearance;
+@property (assign, nonatomic) IBInspectable UIReturnKeyType returnKeyType;
 @property (assign, nonatomic) BOOL isDefaultBehavior;
 @property (strong, nonatomic) UIFont *fieldFont;
 /** 
